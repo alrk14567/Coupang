@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nc13.mappers.ProductMapper">
+
+    <select id="selectAll" resultType="productDTO" parameterType="hashmap">
+        SELECT * FROM product
+        INNER JOIN user
+        ON product.writer_id=user.id
+        ORDER BY product.id DESC
+        LIMIT ${startRow},${size}
+    </select>
+
+    <select id="selectSearch" resultType="productDTO" parameterType="hashmap">
+        SELECT * FROM product
+        INNER JOIN user
+        ON product.writer_id=user.id
+        INNER JOIN category
+        ON category.id=product.id
+        WHERE content LIKE CONCAT ('%',#{inputSearch},'%')
+        OR title LIKE CONCAT ('%',#{inputSearch},'%')
+        OR  item_name LIKE CONCAT ('%',#{inputSearch},'%')
+        OR category_id LIKE CONCAT ('%',#{categoryId},'%')
+        ORDER BY product.id DESC
+        LIMIT ${startRow},${size}
+    </select>
+
+    <insert id="insert" parameterType="productDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product(title,content, writer_id,item_name,item_amount,category_id,price,file_name)
+        VALUES(#{title},#{content},#{writerId}, #{itemName}, #{itemAmount}, #{categoryId},#{price},#{fileName})
+    </insert>
+
+    <select id="selectOne" parameterType="int" resultType="productDTO">
+        SELECT * FROM product
+        INNER JOIN user
+        ON product.writer_id=user.id
+        WHERE product.id=#{id}
+    </select>
+
+    <select id="selectWrite" resultType="int">
+        SELECT product.id FROM product
+        INNER JOIN user
+        ON product.writer_id=user.id
+        ORDER BY product.id DESC
+        LIMIT 1
+    </select>
+
+    <update id="update" parameterType="productDTO">
+        UPDATE product
+        SET title=#{title},
+        content=#{content},
+        item_name=#{itemName},
+        item_amount=#{itemAmount},
+        category_id=#{categoryId},
+        price=#{price},
+        modify_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateFileName" parameterType="productDTO">
+        UPDATE product
+        SET title=#{title},
+        content=#{content},
+        item_name=#{itemName},
+        item_amount=#{itemAmount},
+        category_id=#{categoryId},
+        price=#{price},
+        file_name=#{fileName},
+        modify_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM product
+        WHERE id=#{id}
+    </delete>
+
+    <select id="selectMaxRow" resultType="int">
+        SELECT COUNT(*) FROM product
+    </select>
+
+    <select id="selectMaxPageSearch" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*) FROM product
+        INNER JOIN user
+        ON product.writer_id=user.id
+        WHERE content LIKE CONCAT ('%',#{inputSearch},'%')
+        OR title LIKE CONCAT ('%',#{inputSearch},'%')
+        OR  item_name LIKE CONCAT ('%',#{inputSearch},'%')
+        OR category_id LIKE CONCAT ('%',#{categoryId},'%')
+    </select>
+
+
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nc13.mappers.UserMapper">
+    <select id="auth" parameterType="userDTO"
+            resultType="userDTO">
+        SELECT * FROM user
+        WHERE username = #{username} AND
+        password=#{password}
+    </select>
+
+    <select id="selectByUsername" parameterType="string" resultType="userDTO">
+        SELECT * FROM user
+        WHERE username=#{username}
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="userDTO">
+        SELECT * FROM user
+        WHERE id=#{id}
+    </select>
+
+    <update id="update" parameterType="userDTO">
+        UPDATE user
+        SET nickname=#{nickname},
+        address=#{address},
+        password=#{password}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FORM user
+        WHERE id=#{id}
+    </delete>
+
+    <select id="selectByNickname" parameterType="string" resultType="userDTO">
+        SELECT * FROM user
+        WHERE nickname=#{nickname}
+    </select>
+
+    <select id="selectByName" parameterType="userDTO" resultType="userDTO">
+        SELECT * FROM user
+        WHERE username=#{username} AND
+        nickname=#{nickname}
+    </select>
+
+    <insert id="register" parameterType="userDTO">
+        INSERT INTO user(username,password,nickname,user_grade,address,gradename)
+        VALUES(#{username},#{password},#{nickname},#{userGrade},#{address},#{gradeName})
+    </insert>
+
+    <select id="selectAll" resultType="userDTO" parameterType="hashmap">
+        SELECT * FROM user
+    </select>
+
+    <select id="selectSearch" resultType="userDTO" parameterType="hashmap">
+        SELECT * FROM user
+        WHERE nickname LIKE CONCAT('%',#{inputNickname},'%')
+        ORDER BY id DESC
+        LIMIT #{startRow},#{size}
+    </select>
+
+    <select id="selectMaxRow" resultType="int">
+        SELECT COUNT(*) FROM user
+    </select>
+
+    <select id="selectMaxRowSearch" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM user
+        WHERE nickname LIKE CONCAT('%',#{inputNickname},'%')
+    </select>
+</mapper>

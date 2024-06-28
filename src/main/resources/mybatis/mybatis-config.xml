@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration><!-- 코드에 순서가 있다고 하신다 -->
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.nc13.Coupang.model.UserDTO" alias="userDTO"/>
+        <typeAlias type="com.nc13.Coupang.model.ProductDTO" alias="productDTO"/>
+        <typeAlias type="com.nc13.Coupang.model.CategoryDTO" alias="categoryDTO"/>
+    </typeAliases>
+</configuration>
