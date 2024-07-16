@@ -46,7 +46,7 @@ public class UserController {
 
 
     @GetMapping("register")
-    public String showRegister( Model model, int userGrade) {
+    public String showRegister(Model model, int userGrade) {
         model.addAttribute("userGrade", userGrade);
         return "user/register";
     }
@@ -76,9 +76,9 @@ public class UserController {
     }
 
     @PostMapping("memberAll")
-    public String moveToFistPage(HttpSession session, String inputNickname){
-        String check=inputNickname;
-        session.setAttribute("inputNickname",check);
+    public String moveToFistPage(HttpSession session, String inputNickname) {
+        String check = inputNickname;
+        session.setAttribute("inputNickname", check);
         return "redirect:/user/memberAll/1";
     }
 
@@ -88,16 +88,16 @@ public class UserController {
         if (logIn == null) {
             return "redirect:/";
         }
-        String inputNickname=(String) session.getAttribute("inputNickname");
+        String inputNickname = (String) session.getAttribute("inputNickname");
 
-        model.addAttribute("inputNickname",inputNickname);
+        model.addAttribute("inputNickname", inputNickname);
 
         int maxPage;
-        if(inputNickname!=null){
-            int checkPage=userService.selectMaxPageSearch(inputNickname);
-            maxPage=checkPage;
+        if (inputNickname != null) {
+            int checkPage = userService.selectMaxPageSearch(inputNickname);
+            maxPage = checkPage;
             model.addAttribute("maxPage", maxPage);
-        }else {
+        } else {
             maxPage = userService.selectMaxPage();
             model.addAttribute("maxPage", maxPage);
         }
@@ -123,30 +123,31 @@ public class UserController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        if(inputNickname!=null){
-            List<UserDTO> list=userService.selectSearch(pageNo,inputNickname);
+        if (inputNickname != null) {
+            List<UserDTO> list = userService.selectSearch(pageNo, inputNickname);
             model.addAttribute("list", list);
-        }else {
-            List<UserDTO> list=userService.selectAll(pageNo);
+        } else {
+            List<UserDTO> list = userService.selectAll(pageNo);
             model.addAttribute("list", list);
         }
 
         return "user/memberAll";
     }
+
     ///user/memberOne/${m.id}
     @GetMapping("memberOne/{id}")
     public String memberOne(HttpSession session, @PathVariable int id, RedirectAttributes redirectAttributes, Model model) {
         UserDTO logIn = (UserDTO) session.getAttribute("logIn");
         if (logIn == null) {
             return "redirect:/";
-        } else if(logIn.getUserGrade()!=1) {
-            redirectAttributes.addFlashAttribute("message","권한 없음");
+        } else if (logIn.getUserGrade() != 1) {
+            redirectAttributes.addFlashAttribute("message", "권한 없음");
             return "redirect:/showMessage";
         }
 
         UserDTO userDTO = userService.selectOne(id);
-        if (userDTO==null) {
-            redirectAttributes.addFlashAttribute("message","회원 정보가 없습니다.");
+        if (userDTO == null) {
+            redirectAttributes.addFlashAttribute("message", "회원 정보가 없습니다.");
             return "redirect:/showMessage";
         }
 
@@ -162,18 +163,18 @@ public class UserController {
             return "redirect:/";
         }
 
-        UserDTO userDTO=userService.selectOne(id);
+        UserDTO userDTO = userService.selectOne(id);
         if (userDTO == null) {
             redirectAttributes.addFlashAttribute("message", "존재하지 않는 회원 정보");
             return "redirect:/showMessage";
         }
 
-        if (userDTO.getId() != logIn.getId() && logIn.getUserGrade()!=1) {
+        if (userDTO.getId() != logIn.getId() && logIn.getUserGrade() != 1) {
             redirectAttributes.addFlashAttribute("message", "권한이 없습니다.");
             return "redirect:/showMessage";
         }
 
-        model.addAttribute("userDTO",userDTO);
+        model.addAttribute("userDTO", userDTO);
         return "user/update";
     }
 
@@ -184,13 +185,13 @@ public class UserController {
             return "redirect:/";
         }
 
-        UserDTO userDTO=userService.selectOne(id);
+        UserDTO userDTO = userService.selectOne(id);
         if (userDTO == null) {
             redirectAttributes.addFlashAttribute("message", "존재하지 않는 회원 정보");
             return "redirect:/showMessage";
         }
 
-        if (userDTO.getId() != logIn.getId() || logIn.getUserGrade()!=1) {
+        if (userDTO.getId() != logIn.getId() || logIn.getUserGrade() != 1) {
             redirectAttributes.addFlashAttribute("message", "권한이 없습니다.");
             return "redirect:/showMessage";
         }
@@ -198,7 +199,7 @@ public class UserController {
 
         userService.update(attempt);
 
-        return "redirect:/user/memberOne/"+id;
+        return "redirect:/user/memberOne/" + id;
     }
 
     @GetMapping("delete/{id}")
@@ -208,13 +209,13 @@ public class UserController {
             return "redirect:/";
         }
 
-        UserDTO userDTO=userService.selectOne(id);
+        UserDTO userDTO = userService.selectOne(id);
         if (userDTO == null) {
             redirectAttributes.addFlashAttribute("message", "존재하지 않는 회원 정보");
             return "redirect:/showMessage";
         }
 
-        if (userDTO.getId() != logIn.getId() || logIn.getUserGrade()!=1) {
+        if (userDTO.getId() != logIn.getId() || logIn.getUserGrade() != 1) {
             redirectAttributes.addFlashAttribute("message", "권한이 없습니다.");
             return "redirect:/showMessage";
         }
@@ -222,5 +223,16 @@ public class UserController {
         userService.delete(id);
 
         return "redirect:/user/memberAll";
+    }
+
+    @GetMapping("logOut")
+    public String logOut(HttpSession session) {
+
+
+        session.setAttribute("logIn", null);
+        session.invalidate();
+
+
+        return "redirect:/";
     }
 }

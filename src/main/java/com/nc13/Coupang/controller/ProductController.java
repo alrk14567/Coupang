@@ -2,9 +2,11 @@ package com.nc13.Coupang.controller;
 
 import com.nc13.Coupang.model.CategoryDTO;
 import com.nc13.Coupang.model.ProductDTO;
+import com.nc13.Coupang.model.ReplyDTO;
 import com.nc13.Coupang.model.UserDTO;
 import com.nc13.Coupang.service.ProductService;
 import com.nc13.Coupang.service.CategoryService;
+import com.nc13.Coupang.service.ReplyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,8 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
-    /*@Autowired
-    private ReplyService replyService;*/
+    @Autowired
+    private ReplyService replyService;
 
     @GetMapping("showAll")
     public String moveToFirstPage() {
@@ -187,10 +189,10 @@ public class ProductController {
             return "redirect:/showMessage";
         }
 
-        //List<ReplyDTO> replyList = replyService.selectAll(id);
+        List<ReplyDTO> replyList = replyService.selectAll(id);
 
         model.addAttribute("productDTO", productDTO);
-        //model.addAttribute("replyList",replyList);
+        model.addAttribute("replyList",replyList);
 
         return "product/showOne";
     }

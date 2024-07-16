@@ -28,7 +28,11 @@
                             <a class="btn btn-outline-success" href="/product/write">상품 등록하기</a>
                         </div>
                     </c:if>
+                    <div class="col-2">
+                        <a class="btn btn-outline-danger" href="/user/logOut">로그 아웃</a>
+                    </div>
                 </div>
+
                 <div class="row justify-content-center">
                     <form class="justify-content-center text-center" action="/product/showAll" method="post">
                         <div class="container-fluid">

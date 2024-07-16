@@ -12,5 +12,8 @@
         <typeAlias type="com.nc13.Coupang.model.UserDTO" alias="userDTO"/>
         <typeAlias type="com.nc13.Coupang.model.ProductDTO" alias="productDTO"/>
         <typeAlias type="com.nc13.Coupang.model.CategoryDTO" alias="categoryDTO"/>
+        <typeAlias type="com.nc13.Coupang.model.ReplyDTO" alias="replyDTO"/>
+        <typeAlias type="com.nc13.Coupang.model.CartDTO" alias="cartDTO"/>
+        <typeAlias type="com.nc13.Coupang.model.BuyDTO" alias="buyDTO"/>
     </typeAliases>
 </configuration>

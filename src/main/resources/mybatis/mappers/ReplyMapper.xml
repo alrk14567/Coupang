@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nc13.mappers.ReplyMapper">
+
+    <select id="selectAll" parameterType="int" resultType="replyDTO">
+        SELECT * FROM reply
+        INNER JOIN user
+        ON reply.writer_id=user.id
+        WHERE product_id=#{productId}
+        ORDER BY reply.id ASC
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="replyDTO">
+        SELECT * FROM reply
+        INNER JOIN user
+        ON reply.wirter_id=user.id
+        WHERE reply.id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="replyDTO">
+        INSERT INTO reply(writer_id, product_id, content,entry_date,modify_date)
+        VALUES(#{writerId},#{productId},#{content},NOW(),NOW())
+    </insert>
+
+    <update id="update" parameterType="replyDTO">
+        UPDATE reply SET content=#{content},
+        modify_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+    <delete id ="delete" parameterType="int">
+        DELETE FROM reply
+        WHERE id=#{id}
+    </delete>
+
+
+</mapper>

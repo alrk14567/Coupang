@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nc13.mappers.CartMapper">
+
+    <select id = "selectAll" parameterType="int" resultType="cartDTO">
+        SELECT * FROM cart
+        INNER JOIN user
+        ON cart.user_id=user.id
+        INNER JOIN product
+        ON cart.product_id=product.id
+        WHERE user_id=#{userId}
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="cartDTO">
+        SELECT * FROM cart
+        INNER JOIN user
+        ON cart.user_id=user.id
+        INNER JOIN product
+        ON cart.product_id=product.id
+        WHERE cart.id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="cartDTO">
+        INSERT INTO cart(user_id,product_id,price,amount)
+        VALUES(#{userId},#{productId},#{price},#{amount})
+    </insert>
+
+    <update id="update" parameterType="cartDTO">
+        UPDATE cart SET amount=#{amount},
+        price=#{price}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM cart
+        WHERE id=#{id}
+    </delete>
+
+    <select id="totalPrice" parameterType="int" resultType="int">
+        SELECT SUM(price) FROM cart
+        WHERE user_id=#{userId}
+    </select>
+
+</mapper>
